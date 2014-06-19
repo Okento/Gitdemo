@@ -2,6 +2,7 @@ package todo.web;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +15,16 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Servlet implementation class PdfBasicServlet
  */
-@WebServlet("/PdfBasicServlet.pdf")
-public class PdfBasicServlet extends HttpServlet {
+@WebServlet("/PdfTemplateServlet.pdf")
+public class PdfTemplateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -34,7 +38,19 @@ public class PdfBasicServlet extends HttpServlet {
 			PdfWriter writer = PdfWriter.getInstance(doc, response.getOutputStream());
 			
 			// ドキュメントをオープン
-			doc.open();
+			doc.open();getServletContext();
+			
+			ServletContext app = this.getServletContext();
+			
+			// テンプレートとなるPDF文書を読み込み
+			PdfReader reader = new PdfReader(app.getRealPath("/pdf/20140421.pdf"));
+			
+			// template.pdfの１ページ目をインポート
+			PdfImportedPage impPage = writer.getImportedPage(reader, 1);
+			
+			// インポートしたページをテンプレートとして適用
+			PdfContentByte pcd = writer.getDirectContent();
+			pcd.addTemplate(impPage, 0, 0);
 			
 			// フォントの定義
 			Font fnt = new Font(BaseFont.createFont

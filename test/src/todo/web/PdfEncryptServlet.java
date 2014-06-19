@@ -19,8 +19,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 /**
  * Servlet implementation class PdfBasicServlet
  */
-@WebServlet("/PdfBasicServlet.pdf")
-public class PdfBasicServlet extends HttpServlet {
+@WebServlet("/PdfEncryptServlet.pdf")
+public class PdfEncryptServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -32,6 +32,9 @@ public class PdfBasicServlet extends HttpServlet {
 			
 			// ドキュメントの出力を定義
 			PdfWriter writer = PdfWriter.getInstance(doc, response.getOutputStream());
+			
+			// セキュリティ関連の設定を行う
+			writer.setEncryption("dbtest".getBytes(), "dbtest".getBytes(), PdfWriter.ALLOW_PRINTING | PdfWriter.ALLOW_COPY, PdfWriter.STANDARD_ENCRYPTION_128);
 			
 			// ドキュメントをオープン
 			doc.open();

@@ -41,7 +41,7 @@ public class TodoDAO2 extends CommonMySQLDAO {
 	public TodoValueObject detail(int id) throws Exception {
 		TodoValueObject vo = new TodoValueObject();
 		/**
-		 * 表示するタスクの番号を指定して、タスク詳細を返す。11111
+		 * 表示するタスクの番号を指定して、タスク詳細を返す。
 		 * @param id 表示対象のタスクID
 		 * @return
 		 * @throws Exception
